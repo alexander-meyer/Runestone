@@ -1,55 +1,19 @@
-interface EaseInOutQuadOptions {
-  currentTime: number;
-  start: number;
-  change: number;
-  duration: number;
-}
+function append_text(text: string) {
+  const text_window = document.getElementById("game-text");
+  const input_element = <HTMLInputElement>document.getElementById("user-input");
 
-const easeInOutQuad = (currentTime, start, change, duration): EaseInOutQuadOptions => {
-  let newCurrentTime = currentTime;
-  newCurrentTime /= duration / 2;
+  text_window.innerHTML += "> <i>" + input_element.value + "</i><br/><br/>" + text + "<br/> <br/>";
+  input_element.value = "";
 
-  if (newCurrentTime < 1) {
-    return (change / 2) * newCurrentTime * newCurrentTime + start;
+  if (text_window.scrollHeight > text_window.offsetHeight) {
+    text_window.scrollTo({
+      top: text_window.scrollHeight,
+      left: 0,
+      behavior: "smooth"
+    });
   }
-
-  newCurrentTime -= 1;
-  return (-change / 2) * (newCurrentTime * (newCurrentTime - 2) - 1) + start;
-};
-
-interface SmoothScrollOptions {
-  duration: number;
-  element: HTMLElement;
-  to: number;
-  type: "scrollTop" | "scrollLeft";
 }
 
-// Thanks to Karel Píč for the custom scroll animation with duration
-// https://gist.github.com/andjosh/6764939#gistcomment-3515576
-const smoothScroll = (
-  duration: number,
-  element: HTMLElement,
-  to: number,
-  type = "scrollTop"
-  ): SmoothScrollOptions => {
-  const start = element[type];
-  const change = to - start;
-  const startDate = new Date().getTime();
-
-  const animateScroll = () => {
-    const currentDate = new Date().getTime();
-    const currentTime = currentDate - startDate;
-    element[type] = easeInOutQuad(currentTime, start, change, duration);
-
-    if (currentTime < duration) {
-      requestAnimationFrame(animateScroll);
-    } else {
-      element[type] = to;
-    }
-  };
-  animateScroll();
-
-  return null;
-};
-
-export { smoothScroll };
+export default Object.freeze({
+  append_text
+});

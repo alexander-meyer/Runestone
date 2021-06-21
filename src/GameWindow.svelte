@@ -1,38 +1,23 @@
 <script lang="ts">
-import { afterUpdate, beforeUpdate } from "svelte";
-import { smoothScroll } from "./util/dom";
+import dom_utils from "./util/dom";
 
-  let input = "";
-  let div: HTMLElement;
-  let should_autoscroll: boolean;
+  let text_window: HTMLElement;
 
-  beforeUpdate(function() {
-    should_autoscroll = div && (div.scrollHeight > div.offsetHeight)
-  })
-
-  afterUpdate(function() {
-    if (should_autoscroll) {
-      smoothScroll(2200, div, div.scrollHeight)
-    }
-  })
+  const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mollis aliquam ut porttitor leo a diam sollicitudin tempor id. Duis ut diam quam nulla porttitor massa id. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mollis aliquam ut porttitor leo a diam sollicitudin tempor id. Duis ut diam quam nulla porttitor massa id. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mollis aliquam ut porttitor leo a diam sollicitudin tempor id. Duis ut diam quam nulla porttitor massa id.";
 
   function handle_key_press(event: KeyboardEvent) {
-    const game_text = document.getElementsByClassName("game-text").item(0);
-
     if (event.key == "Enter") {
-      game_text.innerHTML += "> <i>" + input + "</i><br/> <br/>" +
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mollis aliquam ut porttitor leo a diam sollicitudin tempor id. Duis ut diam quam nulla porttitor massa id. In vitae turpis massa sed elementum. Risus commodo viverra maecenas accumsan lacus vel. Hendrerit dolor magna eget est lorem ipsum. Integer eget aliquet nibh praesent tristique magna sit amet. Vulputate eu scelerisque felis imperdiet proin fermentum leo. Neque gravida in fermentum et. Dignissim diam quis enim lobortis scelerisque fermentum dui. <br/><br/>"
-      input = ""
+      dom_utils.append_text(lorem)
     }
   }
 
 </script>
 
 <div class="game-screen">
-  <div class="game-text" bind:this={div}/>
+  <div id="game-text" bind:this={text_window}/>
   <div class="input-container">
     <span class="input-indicator">></span>
-    <input class="user-input" placeholder="What do you do?" bind:value={input} on:keypress={handle_key_press}/>
+    <input id="user-input" placeholder="What do you do?" on:keypress={handle_key_press}/>
   </div>
 </div>
 
@@ -42,7 +27,7 @@ import { smoothScroll } from "./util/dom";
     height: 100%
   }
 
-  .game-text {
+  #game-text {
     height: 100%;
     overflow-y: scroll;
     scrollbar-width: none;
@@ -56,7 +41,7 @@ import { smoothScroll } from "./util/dom";
     margin-right: 0.2em;
   }
 
-  .user-input {
+  #user-input {
     background: transparent;
     border: none;
     border-radius: 7px;

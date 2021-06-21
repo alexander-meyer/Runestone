@@ -7,8 +7,7 @@ export const world = {
     exits: {
       north: 'hill',
       south: 'structure',
-      east: 'water',
-      west: null
+      east: 'water'
     },
     examine: {},
     item: '',
@@ -20,9 +19,7 @@ export const world = {
       'stands a small structure',
     exits: {
       north: 'meadow',
-      south: 'orchard',
-      east: null,
-      west: null
+      south: 'orchard'
     },
     examine: {
       altar: 'There\'s a small groove in the center, about the size of your fist. You get the sense that something used to rest here.'
@@ -34,10 +31,7 @@ export const world = {
     nearbyText:
       'you see some sort of orchard',
     exits: {
-      north: 'structure',
-      south: null,
-      east: null,
-      west: null
+      north: 'structure'
     },
     examine: {
       tree: 'Small white flowers cover the entire tree. Looking at it fills you with a sense of calm. You notice several ripe pears dangling from a low-hanging branch.'
@@ -51,9 +45,6 @@ export const world = {
     nearbyText:
       'you hear the sound of rushing water',
     exits: {
-      north: null,
-      south: null,
-      east: null,
       west: 'meadow'
     },
     examine: {},
@@ -68,9 +59,7 @@ export const world = {
       'a large hill rises from the ground',
     exits: {
       north: 'trees',
-      south: 'meadow',
-      east: null,
-      west: null
+      south: 'meadow'
     },
     examine: {}
   },
@@ -80,10 +69,7 @@ export const world = {
     nearbyText:
       'stands a particularly thick cropping of trees',
     exits: {
-      north: null,
-      south: 'hill',
-      east: null,
-      west: null
+      south: 'hill'
     },
     examine: {}
   },
@@ -93,10 +79,6 @@ export const world = {
     nearbyText:
       'you hear a gentle humming sound',
     exits: {
-      north: null,
-      south: null,
-      east: null,
-      west: null
     },
   },
   cabin: {
@@ -106,10 +88,6 @@ export const world = {
       north: 'trees'
     },
     examine: {
-      north: null,
-      south: null,
-      east: null,
-      west: null
     }
   }
 };

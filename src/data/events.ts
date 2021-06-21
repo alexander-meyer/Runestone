@@ -1,18 +1,23 @@
+import { Item } from "../types/Item.class";
+import { art } from "../data/art";
+import { append_text } from "../util/dom";
+
 export const events = {
   swim: {
       flavor_text: "You leap gracefully off a protruding rock, landing with minimal splash - an applause-worthy dive.",
       item: "Amethyst Ring",
       triggers: ['swim', 'swimming', 'dive', 'jump'],
       conditions_met: function(playerInput, triggers) {
-          return isValidCommand(playerInput, triggers);
+          //return isValidCommand(playerInput, triggers);
+          return true;
       },
       item_needed: 'none',
       event_logic: function(player, flavorText, itemReward) {
-          appendTextAndScroll(flavorText);
+        append_text(flavorText);
 
           if (!player.hasItem(itemReward)) {
               player.addItem(new Item(itemReward));
-              appendTextAndScroll(`Something catches your eye on the riverbed...<br/><br/> <pre>${art.ring}<pre/> * Amethyst Ring added to inventory *<br/>`);
+              append_text(`Something catches your eye on the riverbed...<br/><br/> <pre>${art.ring}<pre/> * Amethyst Ring added to inventory *<br/>`);
           }
       }
   },
@@ -32,11 +37,11 @@ export const events = {
       event_logic: function(player, flavorText, itemReward) {
 
           if (player.hasItem(itemReward)) {
-              appendTextAndScroll('Best not to be greedy. <br/><br/>')
+            append_text('Best not to be greedy. <br/><br/>')
           }
           else {
               player.addItem(new Item(itemReward));
-              appendTextAndScroll(flavorText + `<pre>${art.pear}<pre/>` + '* Pear added to inventory *<br/>');
+              append_text(flavorText + `<pre>${art.pear}<pre/>` + '* Pear added to inventory *<br/>');
           }
       }
   }
