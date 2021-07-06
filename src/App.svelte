@@ -41,7 +41,7 @@
   }
 
   .container {
-    margin: auto;
+    margin: 2em auto;
     width: 70%;
     height: 80%;
   }
