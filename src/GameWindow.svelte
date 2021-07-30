@@ -53,7 +53,7 @@
 <style>
   main {
     color: rgb(70, 54, 30);
-    height: 100%
+    height: 100%;
   }
 
   .title {
@@ -62,7 +62,8 @@
   }
 
   .container {
-    margin: 2em auto;
+    margin: 0 auto;
+    padding-top: 2em;
     width: 70%;
     height: 80%;
   }

@@ -45,7 +45,7 @@ export const world: world_data = {
       west: null
     },
     examine: {
-      altar: "There\"s a small groove in the center, about the size of your fist. You get the sense that something used to rest here."
+      altar: "There\"s a small groove in the center, about the size of your fist. You get a feeling that something used to rest here."
     },
     item: null,
     event: null

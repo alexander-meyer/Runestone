@@ -6,7 +6,7 @@ function append_text(text: string, include_user_input = true) {
     include_user_input == true
     ? "> <i>" + input_element.value + "</i><br/><br/>"
     : ""
-  )
+  );
 
   text_window.innerHTML += input + text + "<br/> <br/>";
   input_element.value = "";
@@ -24,7 +24,7 @@ function help_message() {
   const help_message_html = `This is a petite adventure where you traverse different areas to discover secrets and solve puzzles. Some of the basic commands are:
     <ul>
     <li><b>go</b> _____ : move between rooms</li>
-    <li><b>examine</b> : investigate a particular object</li>
+    <li><b>examine</b> _____ : investigate a particular object</li>
     <li><b>bag</b> : check the contents of your inventory</li>
     <li><b>where am I</b> : information about your current location</li>
     </ul>
