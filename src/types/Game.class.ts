@@ -8,12 +8,16 @@ import type { EventLogic } from "./EventLogic.type";
 import type { ConditionsMet } from "./ConditionsMet.type";
 
 // Static constants
+
 const EXAMINE_WORDS = ["investigate", "examine"];
 const MOVEMENT_WORDS = ["go", "move", "run", "exit"];
 const DIRECTION_WORDS = ["north", "forward", "west", "left", "right", "east", "south"];
 const INVENTORY_WORDS = ["bag", "inventory", "items"];
 
 const DIRECTIONS = ["north", "south", "east", "west"] as const;
+
+// Building block types
+
 type Direction = typeof DIRECTIONS[number];
 
 type RoomExit = keyof typeof world;
@@ -45,6 +49,8 @@ function bad_command() {
 function is_room_exit(value: string): value is RoomExit {
   return Object.keys(world).includes(value);
 }
+
+// Class logic
 
 class GameEvent {
   readonly flavor_text: string;
