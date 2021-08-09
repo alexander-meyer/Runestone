@@ -3,7 +3,16 @@ import type { events } from "./events";
 const DIRECTIONS = [ "north", "south", "east", "west" ] as const;
 type Direction = typeof DIRECTIONS[number];
 
-const ROOMS = ["meadow", "structure", "orchard", "water", "hill", "trees", "bees", "cabin"] as const;
+const ROOMS = [
+  "meadow",
+  "structure",
+  "orchard",
+  "water",
+  "hill",
+  "trees",
+  "bees",
+  "cabin"
+] as const;
 type RoomName = typeof ROOMS[number];
 
 type RoomData = {
@@ -69,7 +78,7 @@ export const world: world_data = {
   },
   water: {
     flavor_text:
-      "You come to the bank of a river. <br/><br/> A large red dragonfly twirls through the air, racing past a pair of sunbathing turtles. The water looks cool and pleasant.",
+      "You come to the bank of a river. <br/><br/> A large red dragonfly darts out of the reeds, twirling through the air. The water looks cool and pleasant.",
     nearby_text:
       "you hear the sound of rushing water",
     exits: {
@@ -82,7 +91,6 @@ export const world: world_data = {
     item: "Amethyst Ring",
     event: "swim"
   },
-
   hill: {
     flavor_text:
       "You reach the top of the hill. <br/><br/> Trees obscure much of your view, but you can see a thick plume of smoke far off to the northwest.",

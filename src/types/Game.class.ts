@@ -43,7 +43,7 @@ type EventData = {
 // Helper functions
 
 function bad_command() {
-  dom_utils.append_text("Unsure what you mean.");
+  dom_utils.append_text("Not sure what you mean.");
 }
 
 function is_room_exit(value: string): value is RoomExit {
@@ -271,34 +271,45 @@ export class Game {
   }
 
   public parse_input(input: string) {
-    let parsed_input = input.toLowerCase().split(" ").filter(element => element !== ">");
+    let parsed_input = input.toLowerCase().split(" ").filter(element => element != ">");
+
+    console.log(parsed_input)
 
     if (MOVEMENT_WORDS.concat(DIRECTION_WORDS).includes(parsed_input[0])) {
-      const directionToMove = logic_utils.find_valid_command(parsed_input, DIRECTION_WORDS.concat(this.room_exits));
-      if (directionToMove !== null) {
-        this.change_room(directionToMove);
+      if (parsed_input.length == 1) {
+        const word = parsed_input[0];
+        if (MOVEMENT_WORDS.includes(word)) {
+          dom_utils.append_text("Where? <br/>");
+        } else {
+          bad_command();
+        }
       } else {
-        bad_command();
+        const directionToMove = logic_utils.find_valid_command(parsed_input, DIRECTION_WORDS.concat(this.room_exits));
+        if (directionToMove != null) {
+          this.change_room(directionToMove);
+        } else {
+          bad_command();
+        }
       }
     } else if (EXAMINE_WORDS.includes(parsed_input[0])) {
       this.examine_room(parsed_input);
-    } else if (logic_utils.find_valid_command(parsed_input, INVENTORY_WORDS) !== null) {
+    } else if (logic_utils.find_valid_command(parsed_input, INVENTORY_WORDS) != null) {
       this.display_inventory();
     } else if (parsed_input.includes("help")) {
       dom_utils.help_message();
-    } else if (logic_utils.find_valid_command(parsed_input, ["where", "am", "i"]) !== null) {
-      dom_utils.append_text(`<p>${this.current_room.flavor_text}<p/>`);
+    } else if (
+      logic_utils.arrays_are_equal(parsed_input, ["where", "am", "i"])
+      || logic_utils.arrays_are_equal(parsed_input, ["look", "around"])
+    ) {
+      dom_utils.append_text(this.current_room.flavor_text);
       this.display_exits();
     } else if (parsed_input.includes("dance")) {
       dom_utils.append_text("you gyrate in place, swinging your arms back and forth. A shame no one is around to admire.<br/>");
     } else if (this.current_room.event != null) {
       this.try_event(parsed_input);
     } else {
-      if (parsed_input.length === 1) {
-        const word = parsed_input[0];
-        if (MOVEMENT_WORDS.includes(word)) {
-          dom_utils.append_text("Where? <br/><br/>");
-        } else if (this.current_room.event != null && this.get_event().triggers.includes(word)) {
+      if (parsed_input.length == 1) {
+        if (this.current_room.event != null && this.get_event().triggers.includes(parsed_input[0])) {
           this.try_event(parsed_input);
         } else {
           bad_command();
