@@ -2,15 +2,15 @@ import { Item } from "../types/Item.class";
 import { art } from "../data/art";
 import dom_utils from "../util/dom";
 import type { Player } from "../types/Player.class";
+import logic_utils from "../util/logic";
 
 export const events = {
   swim: {
-      flavor_text: "You leap gracefully off a protruding rock, landing with minimal splash - an applause-worthy dive.",
+      flavor_text: "You leap gracefully off a protruding rock, landing with minimal splash. The water welcomes you with a cool embrace.",
       item: "Amethyst Ring",
       triggers: ["swim", "swimming", "dive", "jump"],
-      conditions_met: function(player_input, triggers) {
-          //return isValidCommand(player_input, triggers);
-          return true;
+      conditions_met: function(player_input: string[], triggers: string[]) {
+          return logic_utils.is_valid_command(player_input, triggers)
       },
       item_needed: "none",
       event_logic: function(player: Player, flavor_text: string, item_reward: string) {
@@ -35,8 +35,8 @@ export const events = {
           Array.isArray(player_input)
           ? player_input
           : [player_input]
-        )
-        const filteredArray = array_player_input.filter(word => triggers.includes(word))
+        );
+        const filteredArray = array_player_input.filter(word => triggers.includes(word));
 
         return (filteredArray.length > 1 && filteredArray.includes("pear"));
       },
@@ -44,11 +44,11 @@ export const events = {
       event_logic: function(player: Player, flavor_text: string, item_reward: string) {
 
           if (player.has_item(item_reward)) {
-            dom_utils.append_text("Best not to be greedy. <br/><br/>", false)
+            dom_utils.append_text("Best not to be greedy. <br/>");
           }
           else {
               player.add_item(new Item(item_reward));
-              dom_utils.append_text(flavor_text + `<pre>${art.pear}<pre/>` + "* Pear added to inventory *<br/>", false);
+              dom_utils.append_text(flavor_text + `<pre>${art.pear}<pre/>` + "* Pear added to inventory *<br/>");
           }
       }
   }

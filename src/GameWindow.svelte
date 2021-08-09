@@ -1,11 +1,15 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { Game } from "./types/Game.class";
-  import { world } from "./data/world";
+  import { fade } from "svelte/transition";
+  import GameScreen from "./GameScreen.svelte";
 
-  let game: Game;
-  let user_input: string;
-  let show_start = false;
+  enum TransitionState {
+    Start,
+    Loading,
+    Game
+  };
+
+  let current_state = TransitionState.Game;
+  let paused = false;
 
   const infoScreen = `This is a petite adventure where you traverse different areas to discover secrets and solve puzzles. Some of the basic commands are:
     <ul>
@@ -14,64 +18,62 @@
     <li><b>bag</b> : check the contents of your inventory</li>
     <li><b>where am I</b> : information about your current location</li>
     </ul>
-    Areas may also contain hidden triggers that respond to additional prompts. Type <i>help</i> at any time to bring up this info. <br/><br/>
-  `
+    Areas may also contain hidden triggers that respond to additional prompts. Type <i>help</i> at any time to bring up this info. <br/>
+  `;
 
-  onMount(function() {
-    game = new Game("meadow", world)
-  })
-
-  function handle_key_press(event: KeyboardEvent) {
-    if (event.key == "Enter") {
-      game.parse_input(user_input)
-    }
+  function switch_to_game() {
+    current_state = TransitionState.Game;
   }
-
 </script>
 
 <main>
   <div class="container">
-    {#if show_start}
-      <h1 class="title">Runestone</h1>
-      <div class="start-screen">
-        <span>{@html infoScreen}</span>
-        <button class="start-button" on:click= { function() { show_start = false; } }>Start</button>
-      </div>
-    {:else}
-      <div class="game-screen">
-        <div id="game-text"/>
-        <div class="input-container">
-          <span class="input-indicator">></span>
-          <input id="user-input" placeholder="What do you do?" on:keypress={handle_key_press} bind:value={user_input}/>
+    {#if current_state == TransitionState.Start}
+      <div out:fade={{duration: 1500}} on:outroend={switch_to_game}>
+        <h1 class="title">Runestone</h1>
+        <audio bind:paused>
+          <source src="src/fire-crackling-noise.mp3" type="audio/mpeg" />
+          <track kind="captions" />
+        </audio>
+        <div class="start-screen">
+          <span>{@html infoScreen}</span>
+          <button
+            class="start-button"
+            on:click={function () {
+              current_state = TransitionState.Loading;
+            }}>Start</button
+          >
         </div>
       </div>
+    {:else if current_state == TransitionState.Game}
+      <GameScreen />
     {/if}
   </div>
 </main>
 
-
 <style>
   main {
     color: rgb(70, 54, 30);
-    height: 100%;
+    background-color: #fff5e2;
+    height: 100vh;
   }
 
   .title {
-    font: bold 4em 'Lora', serif;
+    font: bold 4em "Lora", serif;
     text-align: center;
   }
 
   .container {
     margin: 0 auto;
-    padding-top: 2em;
     width: 70%;
     height: 80%;
+    padding-top: 2em;
   }
 
   .start-screen {
     display: flex;
     flex-direction: column;
-    font-family: 'Lora', serif;
+    font-family: "Lora", serif;
   }
 
   .start-screen > button {
@@ -81,7 +83,7 @@
     color: rgb(238, 238, 238);
     cursor: pointer;
     font-size: 1.2em;
-    font-family: 'Lora', serif;
+    font-family: "Lora", serif;
     height: 2.5em;
     margin: auto;
     opacity: 0.8;
@@ -91,33 +93,5 @@
 
   .start-button:hover {
     opacity: 1;
-  }
-
-  .game-screen {
-    height: 90%;
-    font-family: "Lora", serif;
-  }
-
-  #game-text {
-    height: 100%;
-    overflow-y: scroll;
-    scrollbar-width: none;
-  }
-
-  .input-container {
-    display: flex;
-    margin: 2em auto;
-  }
-
-  .input-indicator {
-    margin-right: 0.2em;
-  }
-
-  #user-input {
-    background: transparent;
-    border: none;
-    border-radius: 7px;
-    font: italic 1em "Lora", serif;
-    width: 97%;
   }
 </style>

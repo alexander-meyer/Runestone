@@ -10,7 +10,7 @@ import type { ConditionsMet } from "./ConditionsMet.type";
 // Static constants
 
 const EXAMINE_WORDS = ["investigate", "examine"];
-const MOVEMENT_WORDS = ["go", "move", "run", "exit"];
+const MOVEMENT_WORDS = ["go", "move", "run", "exit", "walk"];
 const DIRECTION_WORDS = ["north", "forward", "west", "left", "right", "east", "south"];
 const INVENTORY_WORDS = ["bag", "inventory", "items"];
 
@@ -175,7 +175,6 @@ export class Game {
   }
 
   public change_room(direction: string) {
-    console.log("foo")
     switch (direction) {
       case "forward":
         direction = "north";
@@ -207,7 +206,7 @@ export class Game {
       this.display_exits();
     }
     else {
-      dom_utils.append_text("you can\"t go that way.<br/><br/>");
+      dom_utils.append_text("you can\"t go that way.<br/>");
     }
 
     this.room_exits = this.current_room.neighboring_rooms();
@@ -233,7 +232,7 @@ export class Game {
   public display_inventory() {
     const inventory = this.player.inventory;
     if (Object.entries(inventory).length == 0) {
-      dom_utils.append_text("nothing in your bag.<br/><br/>");
+      dom_utils.append_text("nothing in your bag.");
     } else {
       const inventory_text = Object.keys(inventory).reduce(
         function (accum, current) {
@@ -274,7 +273,7 @@ export class Game {
   public parse_input(input: string) {
     let parsed_input = input.toLowerCase().split(" ").filter(element => element !== ">");
 
-    if (MOVEMENT_WORDS.includes(parsed_input[0])) {
+    if (MOVEMENT_WORDS.concat(DIRECTION_WORDS).includes(parsed_input[0])) {
       const directionToMove = logic_utils.find_valid_command(parsed_input, DIRECTION_WORDS.concat(this.room_exits));
       if (directionToMove !== null) {
         this.change_room(directionToMove);
@@ -291,13 +290,12 @@ export class Game {
       dom_utils.append_text(`<p>${this.current_room.flavor_text}<p/>`);
       this.display_exits();
     } else if (parsed_input.includes("dance")) {
-      dom_utils.append_text("you gyrate in place, swinging your arms back and forth. A shame no one is around to admire. <br/><br/>");
+      dom_utils.append_text("you gyrate in place, swinging your arms back and forth. A shame no one is around to admire.<br/>");
     } else if (this.current_room.event != null) {
       this.try_event(parsed_input);
     } else {
       if (parsed_input.length === 1) {
         const word = parsed_input[0];
-
         if (MOVEMENT_WORDS.includes(word)) {
           dom_utils.append_text("Where? <br/><br/>");
         } else if (this.current_room.event != null && this.get_event().triggers.includes(word)) {

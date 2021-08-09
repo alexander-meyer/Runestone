@@ -100,7 +100,7 @@ export const world: world_data = {
   },
   trees: {
     flavor_text:
-      "You stand at the entrance to a forest. <br/><br/> Looming pines make it too dark to see - perhaps if there was a way to illuminate the path?",
+      "You stand at the entrance to a forest. <br/><br/> Looming pines make it too dark to see without some way to illuminate the path.",
     nearby_text:
       "stands a particularly thick cropping of trees",
     exits: {
