@@ -20,7 +20,7 @@
 
 <div class="game-screen" transition:fade={{duration: 2500}}>
   <div id="game-text" />
-  <div class="input-container">
+  <div class="input">
     <span class="input-indicator">></span>
     <input
       id="user-input"
@@ -43,7 +43,7 @@
     scrollbar-width: none;
   }
 
-  .input-container {
+  .input {
     display: flex;
     margin: 2em auto;
   }

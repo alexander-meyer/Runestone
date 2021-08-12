@@ -6,6 +6,7 @@ import { Player } from "./Player.class";
 import logic_utils from "../util/logic";
 import type { EventLogic } from "./EventLogic.type";
 import type { ConditionsMet } from "./ConditionsMet.type";
+import dom from "../util/dom";
 
 // Static constants
 
@@ -162,6 +163,11 @@ export class Game {
     this.display_exits();
   }
 
+  private mentions_item(user_input: string[]) {
+    const items = this.player.get_items();
+    return logic_utils.has_overlap(user_input, items);
+  }
+
   public get_event() {
     return this.current_room.event;
   }
@@ -280,17 +286,25 @@ export class Game {
   }
 
   public parse_input(input: string) {
-    let parsed_input = input.toLowerCase().split(" ").filter(element => element != ">");
+    let parsed_input = input.toLowerCase().split(" ");
+    const mentioned_item = (
+      this.player.inventory == {}
+      ? null
+      : this.mentions_item(parsed_input)
+    );
 
     if (MOVEMENT_WORDS.concat(DIRECTION_WORDS).includes(parsed_input[0])) {
       if (parsed_input.length == 1) {
         const word = parsed_input[0];
         if (MOVEMENT_WORDS.includes(word)) {
           dom_utils.append_text("Where? <br/>");
+        } else if (Object.keys(this.current_room.exits).includes(word)) {
+          this.change_room(word);
         } else {
           bad_command();
         }
       } else {
+        debugger;
         const directionToMove = logic_utils.find_valid_command(parsed_input, DIRECTION_WORDS.concat(this.room_exits));
         if (directionToMove != null) {
           this.change_room(directionToMove);
@@ -310,6 +324,8 @@ export class Game {
     ) {
       dom_utils.append_text(this.current_room.flavor_text);
       this.display_exits();
+    } else if (mentioned_item != null) {
+      dom_utils.append_text("Do what with " + mentioned_item + "? <br/>");
     } else if (parsed_input.includes("dance")) {
       dom_utils.append_text("you gyrate in place, swinging your arms back and forth. A shame no one is around to admire.<br/>");
     } else if (this.current_room.event != null) {

@@ -14,4 +14,8 @@ export class Player {
   has_item(item_name: string) {
       return this.inventory[item_name] == undefined ? false : true;
   }
+
+  get_items() {
+    return Object.keys(this.inventory);
+  }
 }

@@ -79,7 +79,7 @@ export const world: world_data = {
   },
   water: {
     flavor_text:
-      "You come to the bank of a river. <br/><br/> A large red dragonfly darts out of the reeds, twirling through the air. The water looks cool and pleasant.",
+      "You come to the bank of a river. <br/><br/> Bullfrogs ring out in chorus from somewhere along the shore. The water looks cool and pleasant.",
     nearby_text:
       "you hear the sound of rushing water",
     exits: {
@@ -124,13 +124,13 @@ export const world: world_data = {
   },
   bees: {
     flavor_text:
-      "You come to a garden of golden dandelions. <br/><br/> Honeybees drift from plant to plant, giving rise to a dull buzzing sound throughout the field. In the center of the scene lie several strange boxes, and bent over one of these is a hooded figure.",
+      "You come to a field of golden dandelions. <br/><br/> Honeybees drift from plant to plant, giving rise to a dull buzzing sound.",
     nearby_text:
       "you can hear a gentle humming sound",
     exits: {
       north: "campfire",
       south: null,
-      east: null,
+      east: "meadow",
       west: null
     },
     examine: null,
@@ -153,16 +153,16 @@ export const world: world_data = {
     event: null
   },
   campfire: {
-    flavor_text: "You arrive at a clearing in the trees. In the center lies the remains of a campfire, its stone perimeter beautifully arranged in a perfect circle.",
+    flavor_text: "You arrive at a clearing in the trees. <br/><br/> In the center lies the remains of a campfire, its stone perimeter beautifully arranged in a perfect circle.",
     nearby_text: "you can taste the scent of smoke",
     exits: {
       north: null,
-      south: null,
-      east: "bees",
+      south: "bees",
+      east: null,
       west: null
     },
     examine: {
-      campfire: "You peer into the burned-out fire. Bones from a previous meal are scattered throughout, and - whats this? There's a small box on one of the perimeter stones."
+      campfire: "You peer into the burned-out fire. Bones from a previous meal are scattered throughout and - whats this? There's a small box on one of the perimeter stones."
     },
     item: "Matches",
     event: "matchbox"

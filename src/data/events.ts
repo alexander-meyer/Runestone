@@ -11,7 +11,7 @@ export const events = {
     item: "Amethyst Ring",
     triggers: ["swim", "swimming", "dive", "jump"],
     conditions_met: function (player_input: string[], triggers: string[]) {
-      return logic_utils.is_valid_command(player_input, triggers);
+      return logic_utils.has_overlap(player_input, triggers) != null;
     },
     item_needed: "none",
     event_logic: function (player: Player, flavor_text: string, item_reward: string,  game: Game) {
@@ -75,7 +75,7 @@ export const events = {
         game.change_examine_text(
           "campfire",
           "You peer into the burned-out fire. Bones from a previous meal are scattered throughout."
-        )
+        );
       }
     }
   }
