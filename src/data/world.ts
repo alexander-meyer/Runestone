@@ -11,7 +11,8 @@ const ROOMS = [
   "hill",
   "trees",
   "bees",
-  "cabin"
+  "cabin",
+  "campfire"
 ] as const;
 type RoomName = typeof ROOMS[number];
 
@@ -36,7 +37,7 @@ export const world: world_data = {
       north: "hill",
       south: "structure",
       east: "water",
-      west: null
+      west: "bees"
     },
     examine: null,
     item: null,
@@ -125,9 +126,9 @@ export const world: world_data = {
     flavor_text:
       "You come to a garden of golden dandelions. <br/><br/> Honeybees drift from plant to plant, giving rise to a dull buzzing sound throughout the field. In the center of the scene lie several strange boxes, and bent over one of these is a hooded figure.",
     nearby_text:
-      "you hear a gentle humming sound",
+      "you can hear a gentle humming sound",
     exits: {
-      north: null,
+      north: "campfire",
       south: null,
       east: null,
       west: null
@@ -150,5 +151,20 @@ export const world: world_data = {
     examine: null,
     item: null,
     event: null
+  },
+  campfire: {
+    flavor_text: "You arrive at a clearing in the trees. In the center lies the remains of a campfire, its stone perimeter beautifully arranged in a perfect circle.",
+    nearby_text: "you can taste the scent of smoke",
+    exits: {
+      north: null,
+      south: null,
+      east: "bees",
+      west: null
+    },
+    examine: {
+      campfire: "You peer into the burned-out fire. Bones from a previous meal are scattered throughout, and - whats this? There's a small box on one of the perimeter stones."
+    },
+    item: "Matches",
+    event: "matchbox"
   }
 };

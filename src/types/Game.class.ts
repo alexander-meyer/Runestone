@@ -84,7 +84,7 @@ class GameEvent {
 class Room {
   readonly flavor_text: string;
   readonly nearby_text: string;
-  readonly examine: { [key: string]: string; } | null;
+  examine: { [key: string]: string; } | null;
   readonly exits: { [key in Direction]: RoomExit };
   item: Item | null;
   readonly event: GameEvent | null;
@@ -264,16 +264,23 @@ export class Game {
     const current_event = this.current_room.event;
 
     if (current_event.conditions_met(parsed_input, current_event.triggers)) {
-      current_event.logic(this.player, current_event.flavor_text, current_event.item_reward);
+      current_event.logic(
+        this.player,
+        current_event.flavor_text,
+        current_event.item_reward,
+        this
+      );
     } else {
       bad_command();
     }
   }
 
+  public change_examine_text(feature: string, new_flavor_text: string) {
+    this.current_room.examine[feature] = new_flavor_text;
+  }
+
   public parse_input(input: string) {
     let parsed_input = input.toLowerCase().split(" ").filter(element => element != ">");
-
-    console.log(parsed_input)
 
     if (MOVEMENT_WORDS.concat(DIRECTION_WORDS).includes(parsed_input[0])) {
       if (parsed_input.length == 1) {
