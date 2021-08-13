@@ -12,7 +12,7 @@ import dom from "../util/dom";
 
 const EXAMINE_WORDS = ["investigate", "examine"];
 const MOVEMENT_WORDS = ["go", "move", "run", "exit", "walk"];
-const DIRECTION_WORDS = ["north", "forward", "west", "left", "right", "east", "south"];
+const DIRECTION_WORDS = ["north", "forward", "west", "left", "right", "east", "south", "back"];
 const INVENTORY_WORDS = ["bag", "inventory", "items"];
 
 const DIRECTIONS = ["north", "south", "east", "west"] as const;
@@ -135,6 +135,7 @@ class Room {
 export class Game {
   readonly world: { [key in keyof typeof world]: Room } | {} = {};
   current_room: Room;
+  previous_room: Room | null;
   room_exits: RoomExit[];
   readonly player: Player;
 
@@ -157,6 +158,7 @@ export class Game {
     }
 
     this.current_room = this.world[starting_room_name];
+    this.previous_room = null;
     this.room_exits = this.current_room.neighboring_rooms();
 
     this.display_room_text(false);
@@ -193,10 +195,16 @@ export class Game {
         break;
     }
     const current_room_exits = this.current_room.exits;
-
+    // swap current and previous room
+    if (direction == "back" && this.previous_room != null) {
+      [this.previous_room, this.current_room] = [this.current_room, this.previous_room];
+      this.display_room_text();
+      this.display_exits();
+    }
     // north, south, east, etc...
-    if ((current_room_exits[direction]) != undefined) {
+    else if ((current_room_exits[direction]) != undefined) {
       const new_room_name = current_room_exits[direction];
+      this.previous_room = this.current_room;
       this.current_room = this.world[new_room_name];
       this.display_room_text();
       this.display_exits();
@@ -205,6 +213,7 @@ export class Game {
     else if (is_room_exit(direction) && this.room_exits.includes(direction)) {
       for (let key of Object.keys(current_room_exits)) {
         if (direction == current_room_exits[key]) {
+          this.previous_room = this.current_room;
           this.current_room = this.world[direction];
         }
       }
@@ -304,7 +313,6 @@ export class Game {
           bad_command();
         }
       } else {
-        debugger;
         const directionToMove = logic_utils.find_valid_command(parsed_input, DIRECTION_WORDS.concat(this.room_exits));
         if (directionToMove != null) {
           this.change_room(directionToMove);
