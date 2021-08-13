@@ -10,6 +10,7 @@
 
   let current_state = TransitionState.Game;
   let paused = false;
+  let items_found = 0;
 
   const infoScreen = `This is a petite adventure where you traverse different areas to discover secrets and solve puzzles. Some of the basic commands are:
     <ul>
@@ -46,13 +47,15 @@
         </div>
       </div>
     {:else if current_state == TransitionState.Game}
-      <GameScreen />
+      <GameScreen on:item_found={ function() { items_found++; } }/>
     {/if}
   </div>
+  <span class="item-tracker">Items found: {items_found}/3</span>
 </main>
 
 <style>
   main {
+    display: flex;
     color: rgb(70, 54, 30);
     background-color: #fff5e2;
     height: 100vh;
@@ -64,7 +67,7 @@
   }
 
   .container {
-    margin: 0 auto;
+    margin: 0 2em 0 10%;
     width: 70%;
     height: 80%;
     padding-top: 2em;
@@ -93,5 +96,9 @@
 
   .start-button:hover {
     opacity: 1;
+  }
+
+  .item-tracker {
+    margin-top: 2em;
   }
 </style>

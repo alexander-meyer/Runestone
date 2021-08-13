@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import { Game } from "./types/Game.class";
   import { world } from "./data/world";
   import { fade } from "svelte/transition";
 
   let game: Game;
   let user_input: string;
+  let dispatch = createEventDispatcher();
+  let items_found = 0;
 
   onMount(function () {
     game = new Game("meadow", world);
@@ -14,6 +16,11 @@
   function handle_key_press(event: KeyboardEvent) {
     if (event.key == "Enter") {
       game.parse_input(user_input);
+
+      if (game.player.get_items().length > items_found) {
+        items_found++;
+        dispatch("item_found");
+      }
     }
   }
 </script>
