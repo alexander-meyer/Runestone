@@ -12,4 +12,8 @@ As you explore, there will be secrets to discover. Some useful commands include:
 
 In addition to these prompts, there will also be a variety of other commands, some unique to particular rooms. Examine anything that catches your eye, and you may discover something interesting.
 
+## Try it out
+
+You can access this on your web browser from [here](https://meyeralex.com/).
+
 Best of luck to you, adventurer...
